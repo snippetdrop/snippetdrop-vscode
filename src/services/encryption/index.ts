@@ -1,5 +1,5 @@
-// https://www.npmjs.com/package/node-rsa
-// - using the default 2048 bit
+// @ts-nocheck
+// For some reason ts for node-rsa does not recognize openssh-*-* formats
 
 import NodeRSA from 'node-rsa';
 import { KeyPair } from '../../interfaces';
