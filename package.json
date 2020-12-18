@@ -1,8 +1,20 @@
 {
 	"name": "snippetdrop",
-	"description": "SnippetDrop - Securely share code snippets without leaving VSCode",
+	"displayName": "SnippetDrop",
 	"version": "0.0.1",
-	"publisher": "SnippetDrop",
+	"publisher": "Motivo Solutions, Inc.",
+	"description": "Encrypted code snippet sharing without leaving VSCode",
+	"icon": "media/logo.png",
+	"galleryBanner": {
+		"color": "#7d4098",
+		"theme": "dark"
+	},
+	"license": "SEE LICENSE IN LICENSE",
+	"homepage": "https://snippetdrop.com/",
+	"bugs": {
+		"url": "https://github.com/snippetdrop/snippetdrop-vscode/issues",
+		"email": "team@snippetdrop.com"
+	},
 	"engines": {
 		"vscode": "^1.50.0"
 	},
@@ -12,6 +24,12 @@
 	],
 	"categories": [
 		"Other"
+	],
+	"keywords": [
+		"snippetdrop",
+		"snippets",
+		"share",
+		"secure share"
 	],
 	"activationEvents": [
 		"onView:snippetDrop.snippetView",
