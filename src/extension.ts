@@ -37,6 +37,12 @@ export function activate(context: vscode.ExtensionContext) {
 			await provider.fetchAndSyncSnippetsWrap();
 		}));
 
+		context.subscriptions.push(
+		vscode.commands.registerCommand('snippetDrop.refreshView', async () => {
+			provider.refreshView();
+			if (LocalDB.isLoggedIn()) connectSSE();
+		}));
+
 }
 
 class SnippetsViewProvider implements vscode.WebviewViewProvider {
@@ -53,6 +59,10 @@ class SnippetsViewProvider implements vscode.WebviewViewProvider {
 		if (this._view) this._view.webview.postMessage({ type, value });
 	}
 
+	public refreshView() {
+		if (this._view) this._view.webview.html = this._getHtmlForWebview(this._view.webview);
+	}
+
 	async resolveWebviewView(
 		webviewView: vscode.WebviewView,
 		context: vscode.WebviewViewResolveContext,
@@ -64,10 +74,6 @@ class SnippetsViewProvider implements vscode.WebviewViewProvider {
 			localResourceRoots: [
 				this._extensionUri
 			]
-		};
-
-		const generateView = () => {
-			webviewView.webview.html = this._getHtmlForWebview(webviewView.webview);
 		};
 
 		webviewView.webview.onDidReceiveMessage(async (data) => {
@@ -82,14 +88,14 @@ class SnippetsViewProvider implements vscode.WebviewViewProvider {
 					{
 						await setupEncryption(data.value);
 						connectSSE();
-						generateView();
+						this.refreshView();
 						break;
 					}
 				case 'delete-access-key':
 					{
 						await cleanupDevice();
 						closeSSE();
-						generateView();
+						this.refreshView();
 						break;
 					}
 				case 'fetch-and-sync-snippets':
@@ -138,7 +144,7 @@ class SnippetsViewProvider implements vscode.WebviewViewProvider {
 			}
 		});
 
-		generateView();
+		this.refreshView();
 
 	}
 

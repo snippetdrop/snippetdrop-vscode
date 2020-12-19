@@ -6,10 +6,10 @@ import { LocalStoreSnippet } from '../../interfaces';
 export async function fetchAndSyncSnippets(): Promise<LocalStoreSnippet[]> {
 	// fetch any new snippets from SD API
 	const newSnippets = await API.fetchSnippets();
-	// return out if no new updates
-	if (!newSnippets || !newSnippets.length) return [];
 	// get existing, local snippets
 	const snippets: LocalStoreSnippet[] = LocalDB.getSnippets();
+	// return local snippets if no new updates
+	if (!newSnippets || !newSnippets.length) return snippets;
 	// get device private key
 	const privateKey = LocalDB.getEncryptionPrivateKey();
 	// decrypt and append each new snippet to local snippets array

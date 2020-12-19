@@ -73,12 +73,18 @@
 				"category": "SnippetDrop",
 				"title": "Fetch Snippets",
 				"icon": "$(refresh)"
+			},
+			{
+				"command": "snippetDrop.refreshView",
+				"category": "SnippetDrop",
+				"title": "Refresh Dashboard",
+				"icon": "$(refresh)"
 			}
 		],
 		"menus": {
 			"view/title": [
 				{
-					"command": "snippetDrop.fetchSnippets",
+					"command": "snippetDrop.refreshView",
 					"group": "navigation",
 					"when": "view == snippetDrop.snippetView"
 				}
