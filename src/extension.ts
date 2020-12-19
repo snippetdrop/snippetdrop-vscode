@@ -20,7 +20,8 @@ export function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(
 		vscode.commands.registerCommand('snippetDrop.sendSnippet', async () => {
-			await sendSnippet();
+			if (LocalDB.isLoggedIn()) await sendSnippet();
+			else vscode.window.showErrorMessage('You must be signed into SnippetDrop to send snippets');
 		}));
 
 	context.subscriptions.push(

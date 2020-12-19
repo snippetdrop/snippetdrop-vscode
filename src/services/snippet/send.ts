@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { LocalDB } from '../../db';
 import { encrypt } from '../encryption';
 import { getUserPublicKeys, sendSnippet as sendSnippetApi } from '../api';
+import { PUBLIC_KEY_FORMAT } from '../../config';
 
 const DEFAULT_NEW_USER_LABEL = 'New GitHub User';
 
@@ -11,23 +12,26 @@ function getEditorSelection() {
 }
 
 function getRecipientOptions(contacts: string[]): { label: string }[] {
-	const items = [{ label: DEFAULT_NEW_USER_LABEL }];
-	for (const contact of contacts) {
-		if (contact) items.push({ label: contact });
-	}
-	return items;
+	return contacts.map(c => ({ label: c }));
 }
 
-async function showRecipientSelectionWorkflow(contacts: { label: string }[]): Promise<string> {
-	const recipientOption = await vscode.window.showQuickPick(contacts, { placeHolder: "Select a recipient..." });
-	if (!recipientOption) return '';
-	let recipient: string;
-	if (recipientOption.label === DEFAULT_NEW_USER_LABEL) {
-		recipient = (await vscode.window.showInputBox({ placeHolder: "Enter the recipient's GitHub username..." })) || '';
-	} else {
-		recipient = recipientOption.label;
-	}
-	return recipient;
+function quickPickWorkflow(contacts: { label: string }[]): Promise<string> {
+	return new Promise((resolve) => {
+		const picker = vscode.window.createQuickPick();
+		picker.placeholder = 'Enter the recipient\'s GitHub username...';
+		picker.items = contacts;
+		picker.onDidHide(() => {
+			const str = picker.selectedItems && picker.selectedItems.length ? picker.selectedItems[0].label : '';
+			resolve(str);
+		});
+		picker.onDidChangeValue(str => {
+			picker.items = str.trim() ? [...contacts, { label: str }] : contacts;
+		});
+		picker.onDidAccept(() => {
+			picker.dispose();
+		});
+		picker.show();
+	});	
 }
 
 export async function sendSnippet() {
@@ -40,7 +44,7 @@ export async function sendSnippet() {
 		// generate list of recipients (default new user plus recent contacts from local db)
 		const recipientOptions: { label: string }[] = getRecipientOptions(contacts);
 		// use quick pick and input box to get user's desired recipient
-		const recipient: string = await showRecipientSelectionWorkflow(recipientOptions);
+		const recipient: string = await quickPickWorkflow(recipientOptions);
 		if (!recipient) return;
 		// fetch recipient's public keys from SD API
 		const publicKeysToEncryptWith = await getUserPublicKeys(recipient);
