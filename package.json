@@ -69,6 +69,11 @@
 				"title": "Send Selection via SnippetDrop"
 			},
 			{
+				"command": "snippetDrop.sendFile",
+				"category": "SnippetDrop",
+				"title": "Send File via SnippetDrop"
+			},
+			{
 				"command": "snippetDrop.fetchSnippets",
 				"category": "SnippetDrop",
 				"title": "Fetch Snippets",
@@ -82,6 +87,20 @@
 			}
 		],
 		"menus": {
+			"explorer/context": [
+				{
+					"when": "!explorerResourceIsFolder",
+					"command": "snippetDrop.sendFile",
+					"group": "SnippetDrop"
+				}
+			],
+			"editor/title/context": [
+				{
+					"when": "!activeEditorIsDirty",
+					"command": "snippetDrop.sendFile",
+					"group": "SnippetDrop"
+				}
+			],
 			"view/title": [
 				{
 					"command": "snippetDrop.refreshView",

@@ -22,7 +22,7 @@ export default async function (method: 'GET' | 'POST' | 'DELETE', path: string, 
 		// return API JSON response data
 		return res.data;
 	} catch (e) {
-		console.error(e);
-		vscode.window.showErrorMessage(`SnippetDrop API Error: ${e.toString()}`);
+		vscode.window.showErrorMessage(`SnippetDrop API - ${e.toString()}`);
+		throw e;
 	}
 }

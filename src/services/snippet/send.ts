@@ -34,10 +34,12 @@ function quickPickWorkflow(contacts: { label: string }[]): Promise<string> {
 	});	
 }
 
-export async function sendSnippet() {
+export async function sendSnippet(snippet?: string) {
 	try {
-		// get editor selected text
-		const snippet = getEditorSelection();
+		if (!snippet) {
+			// get editor selected text
+			snippet = getEditorSelection();
+		}
 		if (!snippet) return vscode.window.showErrorMessage('Please select some text to create a snippet');
 		// get recent contacts from local DB
 		let contacts: string[] = LocalDB.getRecentContacts();

@@ -7,6 +7,7 @@ import { sendSnippet } from './services/snippet/send';
 import { fetchAndSyncSnippets } from './services/snippet/fetch';
 import { setEventHandler, connectSSE, closeSSE } from './services/api/sse';
 import setupEncryption from './services/encryption/setup';
+import { getFileContents } from './services/device/filesystem';
 import cleanupDevice from './services/device/cleanup';
 
 export function activate(context: vscode.ExtensionContext) {
@@ -29,6 +30,13 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		vscode.commands.registerCommand('snippetDrop.sendSnippet', async () => {
 			if (LocalDB.isLoggedIn()) await sendSnippet();
+			else vscode.window.showErrorMessage('You must be signed into SnippetDrop to send snippets');
+		}));
+
+		context.subscriptions.push(
+		vscode.commands.registerCommand('snippetDrop.sendFile', async (fileInfo) => {
+			if (!fileInfo || !fileInfo.fsPath) return;
+			if (LocalDB.isLoggedIn()) await sendSnippet(getFileContents(fileInfo.fsPath));
 			else vscode.window.showErrorMessage('You must be signed into SnippetDrop to send snippets');
 		}));
 
@@ -218,7 +226,7 @@ class SnippetsViewProvider implements vscode.WebviewViewProvider {
 		</head>
 		<body>
 			<div class="section">
-				<h1>Snippets Received</h1>
+				<h1>Snippets Inbox</h1>
 				<div class="snippets-wrap">
 				</div>
 			</div>
