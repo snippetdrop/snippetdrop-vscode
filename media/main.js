@@ -39,9 +39,6 @@
         vscode.postMessage({ type: 'load-local-snippets' });
         vscode.postMessage({ type: 'fetch-and-sync-snippets' });
         vscode.postMessage({ type: 'get-blocked-users' });
-        window.setInterval(function () {
-            vscode.postMessage({ type: 'fetch-and-sync-snippets' });
-        }, 10000);
     }
 
     function escapeHTML(html) {

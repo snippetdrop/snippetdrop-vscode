@@ -2,16 +2,12 @@ import axios from 'axios';
 import * as vscode from 'vscode';
 import { API_DOMAIN } from '../../config';
 import { AxiosOptions } from '../../interfaces';
-import { LocalDB } from '../../db';
+import { getIdAndKey } from './token';
 
 export default async function (method: 'GET' | 'POST' | 'DELETE', path: string, data: any) {
 	try {
-		// check if accessToken in LocalDB
-		const accessToken: string = LocalDB.getAccessToken();
-		if (!accessToken) throw new Error('Invalid access token');
-		// check if accessToken is valid with id-key
-		const [id, key] = accessToken.split('-');
-		if (!id || !key) throw new Error('Invalid access token');
+		// get API id and key
+		const { id, key } = getIdAndKey();
 		// setup params for API call
 		const params: AxiosOptions = {
 			method,

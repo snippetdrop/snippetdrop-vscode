@@ -5,6 +5,7 @@ import { deleteSnippet } from './services/snippet/delete';
 import { getBlockedUsers, blockUser, unblockUser } from './services/user/block';
 import { sendSnippet } from './services/snippet/send';
 import { fetchAndSyncSnippets } from './services/snippet/fetch';
+import { setEventHandler, connectSSE, closeSSE } from './services/api/sse';
 import setupEncryption from './services/encryption/setup';
 import cleanupDevice from './services/device/cleanup';
 
@@ -14,6 +15,13 @@ export function activate(context: vscode.ExtensionContext) {
 	LocalDB.state = context.globalState;
 
 	const provider = new SnippetsViewProvider(context.extensionUri);
+
+	if (LocalDB.isLoggedIn()) connectSSE();
+
+	setEventHandler((msg) => {
+		vscode.window.showInformationMessage(msg);
+		provider.fetchAndSyncSnippetsWrap();
+	});
 
 	context.subscriptions.push(
 		vscode.window.registerWebviewViewProvider(SnippetsViewProvider.viewType, provider));
@@ -38,10 +46,10 @@ class SnippetsViewProvider implements vscode.WebviewViewProvider {
 	private _view?: vscode.WebviewView;
 
 	constructor(
-		private readonly _extensionUri: vscode.Uri,
+		private readonly _extensionUri: vscode.Uri
 	) { }
 
-	private notifyWebview(type: string, value: any) {
+	public notifyWebview(type: string, value: any) {
 		if (this._view) this._view.webview.postMessage({ type, value });
 	}
 
@@ -73,12 +81,14 @@ class SnippetsViewProvider implements vscode.WebviewViewProvider {
 				case 'set-access-key':
 					{
 						await setupEncryption(data.value);
+						connectSSE();
 						generateView();
 						break;
 					}
 				case 'delete-access-key':
 					{
 						await cleanupDevice();
+						closeSSE();
 						generateView();
 						break;
 					}
