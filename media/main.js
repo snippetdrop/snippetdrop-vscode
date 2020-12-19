@@ -66,6 +66,12 @@
         }
     }
 
+    function getSnippetPreview(snippet = '', maxCharsToParse = 500, maxLines = 3) {
+        const subSnippet = (escapeHTML(snippet)).substring(0, maxCharsToParse);
+        const lines = subSnippet.split('\n').slice(0, maxLines).map(part => part.replace(/ /g, '&nbsp;').replace(/\t/g, '&nbsp;&nbsp;'));
+        return lines.reduce((html, line) => html + `<code>${line}</code>`, '');
+    }
+
     function renderSnippets(snippets) {
         if (snippets && snippets.length) {
             let html = '';
@@ -75,7 +81,7 @@
                     <div class="sender">${s.from ? s.from : 'Unknown'}</div>
                     <div class="timestamp">${s.timestamp ? new Date(s.timestamp).toLocaleString() : ''}</div>
                     <div class="code">
-                        <code>${(escapeHTML(s.snippet) || '').substring(0, 100)}</code>
+                        ${getSnippetPreview(s.snippet)}
                     </div>
                     <div data-index="${i}" class="block">Block</div>
                     <div data-index="${i}" class="copy">Copy</div>

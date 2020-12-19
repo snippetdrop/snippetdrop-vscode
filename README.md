@@ -4,7 +4,9 @@ SnippetDrop is an end-to-end encrypted, code snippet sharing extension for VSCod
 
 ## Installation
 
-Install through VS Code extensions. Search for `SnippetDrop`.
+1. Install through VS Code extensions. Search for `SnippetDrop`.
+2. Click the SnippetDrop icon in the left sidebar to open your SnippetDrop dashboard.
+3. Follow on-screen instructions to login with GitHub.
 
 ## Sending Snippets
 

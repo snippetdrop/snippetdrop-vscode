@@ -81,6 +81,14 @@ a:visited {
   white-space: nowrap;
 }
 
+code {
+  width: 100%;
+  float: left;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
 .snippet-container > .block,
 .snippet-container > .copy,
 .snippet-container > .delete {
