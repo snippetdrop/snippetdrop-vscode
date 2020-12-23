@@ -9,6 +9,7 @@ import { setEventHandler, connectSSE, closeSSE } from './services/api/sse';
 import setupEncryption from './services/encryption/setup';
 import { getFileContents } from './services/device/filesystem';
 import cleanupDevice from './services/device/cleanup';
+import { initAuthWorkflow } from './services/user/auth';
 
 export function activate(context: vscode.ExtensionContext) {
 
@@ -90,11 +91,9 @@ class SnippetsViewProvider implements vscode.WebviewViewProvider {
 					{
 						const uri: vscode.Uri = vscode.Uri.parse(`${API_DOMAIN}/login/${data.value}`);
 						vscode.commands.executeCommand("vscode.open", uri);
-						break;
-					}
-				case 'set-access-key':
-					{
-						await setupEncryption(data.value);
+						const { userId, apiKey } = await initAuthWorkflow();
+						this.notifyWebview('generating-rsa', null);
+						await setupEncryption(`${userId}-${apiKey}`);
 						connectSSE();
 						this.refreshView();
 						break;
@@ -194,12 +193,8 @@ class SnippetsViewProvider implements vscode.WebviewViewProvider {
 		<body>
 			<div class="section section-welcome">
 				<h1>Welcome to SnippetDrop</h1>
-				<p>Start sharing snippets of code securely with your peers.</p>
+				<p>End-to-end encrypted code snippet sharing</p>
 				<button class="settings-btn" id="login-btn">Login with GitHub</button>
-				<div id="access-token-form">
-					<input type="text" id="access-token" name="access-key" placeholder="Insert Access Key Here">
-					<button class="access-token-btn" id="access-token-btn">Save Key Token</button>
-				</div>
 				<p id="generate-key-msg">Generating device RSA key pair...</p>
 				<p class="footer"><a href="https://snippetdrop.com/help">Help</a> | <a
 						href="https://snippetdrop.com/terms">Terms</a> | <a href="https://snippetdrop.com/privacy">Privacy</a></p>

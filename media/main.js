@@ -15,19 +15,6 @@
         document.querySelector('#login-btn').addEventListener('click', () => {
             vscode.postMessage({ type: 'trigger-login', value: 'github' });
             document.getElementById('login-btn').style.display = "none";
-            document.getElementById('access-token-form').style.display = "block";
-        });
-    }
-
-    if (document.querySelector('#access-token-btn')) {
-        document.querySelector('#access-token-btn').addEventListener('click', () => {
-            const val = (document.getElementById('access-token').value || '').trim();
-            if (!val) return;
-            const [id, key] = val.split('-');
-            if (!id || !key) return;
-            vscode.postMessage({ type: 'set-access-key', value: val });
-            document.getElementById('access-token-form').style.display = "none";
-            document.getElementById('generate-key-msg').style.display = "block";
         });
     }
 
@@ -139,6 +126,12 @@
                     SNIPPETS = message.value;
                     renderSnippets(message.value);
                     break;
+                }
+            case 'generating-rsa':
+                {
+                    if (document.getElementById('generate-key-msg')) {
+                        document.getElementById('generate-key-msg').style.display = "block";
+                    }
                 }
         }
     });

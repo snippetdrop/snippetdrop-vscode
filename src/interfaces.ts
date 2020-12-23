@@ -4,6 +4,11 @@ export interface LocalStoreSnippet {
 	timestamp: string
 }
 
+export interface AccountCreds {
+	userId: string,
+	apiKey: string
+}
+
 export interface KeyPair {
 	publicKey: string,
 	privateKey: string
