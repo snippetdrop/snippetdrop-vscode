@@ -2,9 +2,6 @@ import * as vscode from 'vscode';
 import { LocalDB } from '../../db';
 import { encrypt } from '../encryption';
 import { getUserPublicKeys, sendSnippet as sendSnippetApi } from '../api';
-import { PUBLIC_KEY_FORMAT } from '../../config';
-
-const DEFAULT_NEW_USER_LABEL = 'New GitHub User';
 
 function getEditorSelection() {
 	const editor = vscode.window.activeTextEditor;
@@ -22,7 +19,7 @@ function quickPickWorkflow(contacts: { label: string }[]): Promise<string> {
 		picker.items = contacts;
 		picker.onDidHide(() => {
 			const str = picker.selectedItems && picker.selectedItems.length ? picker.selectedItems[0].label : '';
-			resolve(str);
+			resolve(str.toLowerCase()); // SnippetDrop server uses full lowercase usernames
 		});
 		picker.onDidChangeValue(str => {
 			picker.items = str.trim() ? [...contacts, { label: str }] : contacts;
