@@ -74,7 +74,9 @@
         // get up to max lines and replace spaces and tabs with &nbsp;
         const previewLines = subSnippetLines.slice(0, maxLines).map(part => part.replace(/ /g, '&nbsp;').replace(/\t/g, '&nbsp;&nbsp;'));
         // if snippet had more lines than allowed to display, add a preview line with ...
-        if (subSnippetLines.length > maxLines) previewLines.push('...');
+        if (subSnippetLines.length > maxLines) {
+            previewLines.push(`... (${(snippet.match(/\n/g) || []).length + 1 - maxLines} more lines)`);
+        }
         // return each line wrapped inside <code> element
         return previewLines.reduce((html, line) => html + `<code>${line}</code>`, '');
     }
