@@ -4,6 +4,8 @@ import { API_DOMAIN } from '../../config';
 import { getIdAndKey } from './token';
 import { LocalDB } from '../../db';
 
+let lastKeepAlive: number = Date.now();
+
 export let es: EventSource;
 let eventHandler;
 
@@ -36,10 +38,20 @@ export function connectSSE() {
 	es.addEventListener('message', (e: MessageEvent) => {
 		if (!e || !e.data) return;
 		// discard any keep alive messages
-		if (e.data === 'keep-alive') return;
+		if (e.data === 'keep-alive') {
+			lastKeepAlive = Date.now();
+			return;
+		}
 		eventHandler(e.data);
 	});
 }
+
+setInterval(() => {
+	// if it's more than 1.5 min since last keep alive,
+	// attempt re-connect
+	// required if vscode sits idle in background too long
+	if (Date.now() - lastKeepAlive > 90000) connectSSE();
+}, 60000);
 
 export function setEventHandler(cb) {
 	eventHandler = cb;
