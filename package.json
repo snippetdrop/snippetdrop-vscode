@@ -1,7 +1,7 @@
 {
 	"name": "snippetdrop",
 	"displayName": "SnippetDrop",
-	"version": "0.2.1",
+	"version": "1.0.0",
 	"publisher": "SnippetDrop",
 	"description": "Encrypted code snippet sharing without leaving VSCode",
 	"icon": "media/logo.png",
