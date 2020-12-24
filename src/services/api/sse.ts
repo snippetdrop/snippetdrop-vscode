@@ -1,7 +1,7 @@
 // realtime notifications via server-sent events
 import EventSource from 'eventsource';
 import { API_DOMAIN } from '../../config';
-import { getIdAndKey } from './token';
+import { getAccessKey } from './token';
 import { LocalDB } from '../../db';
 
 let lastKeepAlive: number = Date.now();
@@ -16,17 +16,17 @@ export function closeSSE() {
 	}
 }
 
-export function connectSSE() {
+export async function connectSSE() {
 	closeSSE();
 	// get API id and key
-	const { id, key } = getIdAndKey();
+	const { id, token } = await getAccessKey();
 	// get pub key hash
 	const hash = LocalDB.getEncryptionHash();
 	// setup eventsource params
 	const opts = {
 		headers: {
 			'x-sdrop-id': id,
-			"Authorization": key
+			"Authorization": token
 		}
 	};
 	// create event stream
@@ -50,7 +50,7 @@ setInterval(() => {
 	// if it's more than 1.5 min since last keep alive,
 	// attempt re-connect
 	// required if vscode sits idle in background too long
-	if (Date.now() - lastKeepAlive > 90000) connectSSE();
+	if ((Date.now() - lastKeepAlive > 90000) && LocalDB.isLoggedIn()) connectSSE();
 }, 60000);
 
 export function setEventHandler(cb) {

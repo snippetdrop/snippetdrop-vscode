@@ -13,16 +13,32 @@ export class LocalDB {
     }
   }
 
-  static async setAccessKey(key: string) {
+  static async setUserId(key: string) {
+    return this.state.update(DB_KEYS.userId, key);
+  }
+
+  static getUserId(): string {
+    return this.state.get(DB_KEYS.userId) || '';
+  }
+
+  static async setApiKey(key: string) {
+    return this.state.update(DB_KEYS.apiKey, key);
+  }
+
+  static getApiKey(): string {
+    return this.state.get(DB_KEYS.apiKey) || '';
+  }
+
+  static async setAccessKey(key: any) {
     return this.state.update(DB_KEYS.accessKey, key);
   }
 
-  static getAccessToken(): string {
-    return this.state.get(DB_KEYS.accessKey) || "";
+  static getAccessKey(): any {
+    return this.state.get(DB_KEYS.accessKey) || {};
   }
 
   static isLoggedIn(): boolean {
-    return !!this.state.get(DB_KEYS.accessKey);
+    return !!LocalDB.getUserId();
   }
 
   static setEncryptionKeys(publicKey: string, privateKey: string) {

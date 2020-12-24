@@ -93,8 +93,10 @@ class SnippetsViewProvider implements vscode.WebviewViewProvider {
 						vscode.commands.executeCommand("vscode.open", uri);
 						const { userId, apiKey } = await initAuthWorkflow();
 						this.notifyWebview('generating-rsa', null);
-						await setupEncryption(`${userId}-${apiKey}`);
-						connectSSE();
+						await LocalDB.setUserId(userId);
+						await LocalDB.setApiKey(apiKey);
+						await setupEncryption();
+						await connectSSE();
 						this.refreshView();
 						break;
 					}

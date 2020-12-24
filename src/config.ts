@@ -6,6 +6,8 @@ export const PUBLIC_KEY_FORMAT = 'openssh-public-pem';
 export const PRIVATE_KEY_FORMAT = 'openssh-private-pem';
 export const DB_KEYS_PREFIX = DEV ? 'dev.' : '';
 export const DB_KEYS = {
+	userId: DB_KEYS_PREFIX + 'snippetdrop.user_id',
+	apiKey: DB_KEYS_PREFIX + 'snippetdrop.api_key',
 	accessKey: DB_KEYS_PREFIX + 'snippetdrop.access_key',
 	encryptionKeys: DB_KEYS_PREFIX + 'snippetdrop.encryption_keys',
 	encryptionPubKeyHash: DB_KEYS_PREFIX + 'snippetdrop.encryption_pub_key_hash',
