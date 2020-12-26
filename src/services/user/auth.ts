@@ -13,9 +13,9 @@ async function listenForAuthRes(): Promise<AccountCreds> {
 			res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
 			res.setHeader('Access-Control-Allow-Headers', '*');
 			res.writeHead(200, { 'Content-Type': 'text/html' });
-			const { userId, apiKey } = url.parse(req.url, true).query;
+			const { userId, apiKey, username } = url.parse(req.url, true).query;
 			res.end('Success');
-			resolve({ userId: `${userId}`, apiKey: `${apiKey}` });
+			resolve({ userId: `${userId}`, apiKey: `${apiKey}`, username: `${username}` });
 		});
 		server.listen(LOCAL_AUTH_LISTENER_PORT);
 	});
@@ -23,11 +23,11 @@ async function listenForAuthRes(): Promise<AccountCreds> {
 
 export async function initAuthWorkflow(): Promise<AccountCreds> {
 	// spin up local server and listen for response
-	const { userId, apiKey } = await listenForAuthRes();
+	const { userId, apiKey, username } = await listenForAuthRes();
 	// gracefully shutdown local server
 	if (server && server.close) {
 		server.close();
 		server = undefined;
 	}
-	return { userId, apiKey };
+	return { userId, apiKey, username };
 }

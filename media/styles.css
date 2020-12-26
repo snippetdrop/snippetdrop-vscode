@@ -33,7 +33,16 @@ h1 {
   display: none;
 }
 
-.footer {
+.account-section p {
+  text-align: center;
+  margin: 5px 0;
+}
+
+.account-section #username {
+  display: none;
+}
+
+.copyright {
 	margin: 10px 0;
   font-size: 0.8em;
   text-align: center;

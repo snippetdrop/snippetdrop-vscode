@@ -19,6 +19,7 @@
     }
 
     if (document.querySelector('#disconnect-btn')) {
+        vscode.postMessage({ type: 'get-username' });
         document.querySelector('#disconnect-btn').addEventListener('click', () => {
             vscode.postMessage({ type: 'delete-access-key', value: true });
         });
@@ -33,6 +34,15 @@
                     if (document.getElementById('generate-key-msg')) {
                         document.getElementById('generate-key-msg').style.display = "block";
                     }
+                    break;
+                }
+            case 'render-username':
+                {
+                    if (document.getElementById('username') && message.value) {
+                        document.getElementById('username').innerHTML = `Logged in as <strong>${message.value}</strong>`;
+                        document.getElementById('username').style.display = "block";
+                    }
+                    break;
                 }
         }
     });

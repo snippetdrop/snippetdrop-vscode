@@ -7,7 +7,8 @@ export interface LocalStoreSnippet {
 
 export interface AccountCreds {
 	userId: string,
-	apiKey: string
+	apiKey: string,
+	username: string
 }
 
 export interface KeyPair {

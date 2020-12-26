@@ -45,10 +45,11 @@ export class AccountProvider implements vscode.WebviewViewProvider {
 					{
 						const uri: vscode.Uri = vscode.Uri.parse(`${API_DOMAIN}/login/${data.value}`);
 						vscode.commands.executeCommand("vscode.open", uri);
-						const { userId, apiKey } = await initAuthWorkflow();
+						const { userId, apiKey, username } = await initAuthWorkflow();
 						this.notifyWebview('generating-rsa', null);
 						await LocalDB.setUserId(userId);
 						await LocalDB.setApiKey(apiKey);
+						await LocalDB.setUsername(username);
 						await setupEncryption();
 						vscode.commands.executeCommand('snippetDrop.refreshAllViews');
 						break;
@@ -58,6 +59,11 @@ export class AccountProvider implements vscode.WebviewViewProvider {
 						await cleanupDevice();
 						vscode.commands.executeCommand('snippetDrop.refreshAllViews');
 						break;
+					}
+				case 'get-username':
+					{
+						const username = await LocalDB.getUsername();
+						this.notifyWebview('render-username', username);
 					}
 			}
 		});
@@ -78,15 +84,16 @@ export class AccountProvider implements vscode.WebviewViewProvider {
 			<div class="section">
 				<button class="settings-btn" id="login-btn">Login with GitHub</button>
 				<p id="generate-key-msg">Generating device RSA key pair...</p>
-				<p class="footer"><a href="https://snippetdrop.com/help">Help</a> | <a
+				<p class="copyright"><a href="https://snippetdrop.com/help">Help</a> | <a
 						href="https://snippetdrop.com/terms">Terms</a> | <a href="https://snippetdrop.com/privacy">Privacy</a></p>
 			</div>
 			`;
 		} else {
 			html += `
-			<div class="section">
+			<div class="section account-section">
+				<p id="username"></p>
 				<button class="settings-btn" id="disconnect-btn">Disconnect Device</button>
-				<p class="footer"><a href="https://snippetdrop.com/help">Help</a> | <a
+				<p class="copyright"><a href="https://snippetdrop.com/help">Help</a> | <a
 						href="https://snippetdrop.com/terms">Terms</a> | <a href="https://snippetdrop.com/privacy">Privacy</a></p>
 			</div>
 			`;

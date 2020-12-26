@@ -13,6 +13,14 @@ export class LocalDB {
     }
   }
 
+  static async setUsername(username: string) {
+    return this.state.update(DB_KEYS.username, username);
+  }
+
+  static getUsername(): string {
+    return this.state.get(DB_KEYS.username) || '';
+  }
+
   static async setUserId(key: string) {
     return this.state.update(DB_KEYS.userId, key);
   }
