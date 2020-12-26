@@ -12,5 +12,6 @@ export const DB_KEYS = {
 	encryptionKeys: DB_KEYS_PREFIX + 'snippetdrop.encryption_keys',
 	encryptionPubKeyHash: DB_KEYS_PREFIX + 'snippetdrop.encryption_pub_key_hash',
 	recentContacts: DB_KEYS_PREFIX + 'snippetdrop.recent_contacts',
-	snippets: DB_KEYS_PREFIX + 'snippetdrop.snippets'
+	snippets: DB_KEYS_PREFIX + 'snippetdrop.snippets',
+	snippetsSent: DB_KEYS_PREFIX + 'snippetdrop.snippets_sent'
 };

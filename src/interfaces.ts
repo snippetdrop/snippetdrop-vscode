@@ -1,5 +1,6 @@
 export interface LocalStoreSnippet {
-	from: string,
+	from?: string,
+	to?: string,
 	snippet: string,
 	timestamp: string
 }

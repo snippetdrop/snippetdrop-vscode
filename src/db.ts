@@ -74,4 +74,12 @@ export class LocalDB {
     return this.state.update(DB_KEYS.snippets, snippets);
   }
 
+  static getSnippetsSent(): LocalStoreSnippet[] {
+    return this.state.get(DB_KEYS.snippetsSent) || [];
+  }
+
+  static setSnippetsSent(snippets: LocalStoreSnippet[]) {
+    return this.state.update(DB_KEYS.snippetsSent, snippets);
+  }
+
 }

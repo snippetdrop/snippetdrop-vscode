@@ -6,6 +6,7 @@ import { getFileContents } from './services/device/filesystem';
 import { SnippetsInboxProvider } from './webviews/inbox';
 import { BlockedSendersProvider } from './webviews/blocked';
 import { AccountProvider } from './webviews/account';
+import { SnippetsSentProvider } from './webviews/sent';
 
 export function activate(context: vscode.ExtensionContext) {
 
@@ -15,6 +16,7 @@ export function activate(context: vscode.ExtensionContext) {
 	const providerInbox = new SnippetsInboxProvider(context.extensionUri);
 	const providerBlocked = new BlockedSendersProvider(context.extensionUri);
 	const providerAccount = new AccountProvider(context.extensionUri);
+	const providerSent = new SnippetsSentProvider(context.extensionUri);
 
 	if (LocalDB.isLoggedIn()) connectSSE();
 
@@ -27,6 +29,9 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.window.registerWebviewViewProvider(SnippetsInboxProvider.viewType, providerInbox));
 
 	context.subscriptions.push(
+		vscode.window.registerWebviewViewProvider(SnippetsSentProvider.viewType, providerSent));
+
+	context.subscriptions.push(
 		vscode.window.registerWebviewViewProvider(BlockedSendersProvider.viewType, providerBlocked));
 
 	context.subscriptions.push(
@@ -34,14 +39,20 @@ export function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(
 		vscode.commands.registerCommand('snippetDrop.sendSnippet', async () => {
-			if (LocalDB.isLoggedIn()) await sendSnippet();
+			if (LocalDB.isLoggedIn()) {
+				await sendSnippet();
+				providerSent.refreshView();
+			}
 			else vscode.window.showErrorMessage('You must be signed into SnippetDrop to send snippets');
 		}));
 
 	context.subscriptions.push(
 		vscode.commands.registerCommand('snippetDrop.sendFile', async (fileInfo) => {
 			if (!fileInfo || !fileInfo.fsPath) return;
-			if (LocalDB.isLoggedIn()) await sendSnippet(getFileContents(fileInfo.fsPath));
+			if (LocalDB.isLoggedIn()) {
+				await sendSnippet(getFileContents(fileInfo.fsPath));
+				providerSent.refreshView();
+			}
 			else vscode.window.showErrorMessage('You must be signed into SnippetDrop to send snippets');
 		}));
 
@@ -51,17 +62,23 @@ export function activate(context: vscode.ExtensionContext) {
 		}));
 
 	context.subscriptions.push(
-		vscode.commands.registerCommand('snippetDrop.refreshView', async () => {
+		vscode.commands.registerCommand('snippetDrop.refreshAllViews', async () => {
 			providerInbox.refreshView();
 			providerBlocked.refreshView();
 			providerAccount.refreshView();
+			providerSent.refreshView();
 			if (LocalDB.isLoggedIn()) connectSSE();
 			else closeSSE();
 		}));
 
-		context.subscriptions.push(
+	context.subscriptions.push(
 		vscode.commands.registerCommand('snippetDrop.refreshBlockedView', async () => {
 			providerBlocked.refreshView();
+		}));
+
+		context.subscriptions.push(
+		vscode.commands.registerCommand('snippetDrop.refreshSentView', async () => {
+			providerSent.refreshView();
 		}));
 
 }

@@ -60,6 +60,13 @@ a:visited {
   overflow: hidden;
 }
 
+.snippet-sent-container {
+  grid-template-areas:
+  'sender sender sender sender timestamp timestamp'
+  'code code code code code code'
+  'copy copy copy resend resend resend';
+}
+
 .snippet-container > .sender,
 .snippet-container > .timestamp {
   padding: 10px 10px 0;
@@ -96,6 +103,7 @@ code {
 
 .snippet-container > .block,
 .snippet-container > .copy,
+.snippet-container > .resend,
 .snippet-container > .delete {
     text-align: center;
     font-size: .7em;
@@ -108,9 +116,14 @@ code {
 
 .snippet-container > .block:hover,
 .snippet-container > .copy:hover,
+.snippet-container > .resend:hover,
 .snippet-container > .delete:hover,
 .blocked-sender-container > .unblock:hover {
     background: var(--vscode-button-background);
+}
+
+.snippet-container > .resend {
+  grid-area: resend;
 }
 
 .snippet-container > .block {
@@ -120,6 +133,12 @@ code {
 .snippet-container > .copy {
 	grid-area: copy;
 	border-left: 1px solid var(--vscode-button-background);
+  border-right: 1px solid var(--vscode-button-background);
+}
+
+.snippet-sent-container > .copy {
+  grid-area: copy;
+  border-left: none;
   border-right: 1px solid var(--vscode-button-background);
 }
 

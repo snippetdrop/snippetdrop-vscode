@@ -31,6 +31,16 @@ function quickPickWorkflow(contacts: { label: string }[]): Promise<string> {
 	});	
 }
 
+async function saveSentSnippet(snippet: string, to: string) {
+	const snippets = LocalDB.getSnippetsSent();
+	snippets.unshift({
+		to,
+		snippet, 
+		timestamp: new Date().toString(),
+	});
+	await LocalDB.setSnippetsSent(snippets.slice(0, 25));
+}
+
 export async function sendSnippet(snippet?: string) {
 	try {
 		if (!snippet) {
@@ -65,6 +75,8 @@ export async function sendSnippet(snippet?: string) {
 		contacts = [...new Set(contacts)];
 		// save contacts
 		await LocalDB.setRecentContacts(contacts);
+		// save sent snippet
+		await saveSentSnippet(snippet, recipient);
 	} catch (e) {
 		vscode.window.showErrorMessage(e.toString());
 	}

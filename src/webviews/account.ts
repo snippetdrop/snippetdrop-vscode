@@ -50,13 +50,13 @@ export class AccountProvider implements vscode.WebviewViewProvider {
 						await LocalDB.setUserId(userId);
 						await LocalDB.setApiKey(apiKey);
 						await setupEncryption();
-						vscode.commands.executeCommand('snippetDrop.refreshView');
+						vscode.commands.executeCommand('snippetDrop.refreshAllViews');
 						break;
 					}
 				case 'delete-access-key':
 					{
 						await cleanupDevice();
-						vscode.commands.executeCommand('snippetDrop.refreshView');
+						vscode.commands.executeCommand('snippetDrop.refreshAllViews');
 						break;
 					}
 			}

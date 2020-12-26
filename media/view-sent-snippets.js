@@ -10,8 +10,7 @@
 	const vscode = acquireVsCodeApi();
 
 	// TODO: Cleanup query selectors
-	vscode.postMessage({ type: 'load-local-snippets' });
-	vscode.postMessage({ type: 'fetch-and-sync-snippets' });
+	vscode.postMessage({ type: 'load-sent-snippets' });
 
 	function escapeHTML(html) {
 		return html.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -21,11 +20,8 @@
 		copy: (index) => {
 			vscode.postMessage({ type: 'copy-to-clipboard', value: SNIPPETS[index].snippet });
 		},
-		block: (index) => {
-			vscode.postMessage({ type: 'block-user', value: SNIPPETS[index].from });
-		},
-		delete: (index) => {
-			vscode.postMessage({ type: 'snippet-delete-index', value: index });
+		resend: (index) => {
+			vscode.postMessage({ type: 'resend-snippet', value: SNIPPETS[index].snippet });
 		}
 	};
 
@@ -55,24 +51,22 @@
 			let html = '';
 			snippets.forEach((s, i) => {
 				html += `
-							<div class="snippet-container">
-									<div class="sender">&darr; ${s.from ? s.from : 'Unknown'}</div>
+							<div class="snippet-container snippet-sent-container">
+									<div class="sender">&uarr; ${s.to ? s.to : 'Unknown'}</div>
 									<div class="timestamp">${s.timestamp ? new Date(s.timestamp).toLocaleString() : ''}</div>
 									<div class="code">
 											${getSnippetPreview(s.snippet)}
 									</div>
-									<div data-index="${i}" class="block">Block</div>
 									<div data-index="${i}" class="copy">Copy</div>
-									<div data-index="${i}" class="delete">Delete</div>
+									<div data-index="${i}" class="resend">Resend</div>
 							</div>
 							`;
 			});
 			document.querySelector('.snippets-wrap').innerHTML = html;
 			registerButtons(document.querySelectorAll('.copy'), 'copy');
-			registerButtons(document.querySelectorAll('.block'), 'block');
-			registerButtons(document.querySelectorAll('.delete'), 'delete');
+			registerButtons(document.querySelectorAll('.resend'), 'resend');
 		} else {
-			document.querySelector('.snippets-wrap').innerHTML = '<p>Ask a colleague to send you a snippet or send yourself one to bookmark snippets of code.</p>';
+			document.querySelector('.snippets-wrap').innerHTML = '<p>None</p>';
 		}
 	}
 

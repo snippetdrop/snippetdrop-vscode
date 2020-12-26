@@ -35,6 +35,7 @@
 		"onStartupFinished",
 		"onView:snippetDrop.snippetInbox",
 		"onView:snippetDrop.blockedSenders",
+		"onView:snippetDrop.accountSettings",
 		"onCommand:snippetDrop.sendSnippet",
 		"onCommand:snippetDrop.fetchSnippets"
 	],
@@ -63,9 +64,17 @@
 				},
 				{
 					"type": "webview",
+					"id": "snippetDrop.snippetSent",
+					"name": "Sent",
+					"icon": "media/logo.svg",
+					"visibility": "collapsed"
+				},
+				{
+					"type": "webview",
 					"id": "snippetDrop.blockedSenders",
 					"name": "Blocked Senders",
-					"icon": "media/logo.svg"
+					"icon": "media/logo.svg",
+					"visibility": "collapsed"
 				},
 				{
 					"type": "webview",
@@ -93,9 +102,15 @@
 				"icon": "$(refresh)"
 			},
 			{
-				"command": "snippetDrop.refreshView",
+				"command": "snippetDrop.refreshAllViews",
 				"category": "SnippetDrop",
 				"title": "Refresh Inbox",
+				"icon": "$(refresh)"
+			},
+			{
+				"command": "snippetDrop.refreshSentView",
+				"category": "SnippetDrop",
+				"title": "Refresh Sent",
 				"icon": "$(refresh)"
 			},
 			{
@@ -122,9 +137,14 @@
 			],
 			"view/title": [
 				{
-					"command": "snippetDrop.refreshView",
+					"command": "snippetDrop.refreshAllViews",
 					"group": "navigation",
 					"when": "view == snippetDrop.snippetInbox"
+				},
+				{
+					"command": "snippetDrop.refreshSentView",
+					"group": "navigation",
+					"when": "view == snippetDrop.snippetSent"
 				},
 				{
 					"command": "snippetDrop.refreshBlockedView",
