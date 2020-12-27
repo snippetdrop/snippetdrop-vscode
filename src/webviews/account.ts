@@ -43,15 +43,19 @@ export class AccountProvider implements vscode.WebviewViewProvider {
 			switch (data.type) {
 				case 'trigger-login':
 					{
-						const uri: vscode.Uri = vscode.Uri.parse(`${API_DOMAIN}/login/${data.value}`);
-						vscode.commands.executeCommand("vscode.open", uri);
-						const { userId, apiKey, username } = await initAuthWorkflow();
-						this.notifyWebview('generating-rsa', null);
-						await LocalDB.setUserId(userId);
-						await LocalDB.setApiKey(apiKey);
-						await LocalDB.setUsername(username);
-						await setupEncryption();
-						vscode.commands.executeCommand('snippetDrop.refreshAllViews');
+						try {
+							const uri: vscode.Uri = vscode.Uri.parse(`${API_DOMAIN}/login/${data.value}`);
+							vscode.commands.executeCommand("vscode.open", uri);
+							const { userId, apiKey, username } = await initAuthWorkflow();
+							this.notifyWebview('generating-rsa', null);
+							await LocalDB.setUserId(userId);
+							await LocalDB.setApiKey(apiKey);
+							await LocalDB.setUsername(username);
+							await setupEncryption();
+							vscode.commands.executeCommand('snippetDrop.refreshAllViews');
+						} catch (e) {
+							vscode.window.showErrorMessage(`SnippetDrop encountered an error during login. Please try again. ${e.toString()}`);
+						}
 						break;
 					}
 				case 'delete-access-key':

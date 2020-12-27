@@ -32,6 +32,22 @@ async function getNewTempToken(id, token): Promise<any> {
 	return res.data;
 }
 
+// TODO: This and APIClient are redundant; consolidate?
+export async function getApiKeyViaOTT(id, ott): Promise<any> {
+	const params: AxiosOptions = {
+		method: 'GET',
+		data: null,
+		headers: {
+			'x-sdrop-id': id,
+			"Authorization": ott
+		}
+	};
+	// call API
+	const res = await axios(`${API_DOMAIN}/api/v1/api-key`, params);
+	// return API JSON response data
+	return res.data;
+}
+
 export async function getAccessKey(): Promise<{ id, token }> {
 	const userId = LocalDB.getUserId();
 	let accessKey = LocalDB.getAccessKey();
