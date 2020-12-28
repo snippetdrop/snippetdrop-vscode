@@ -14,11 +14,15 @@ SnippetDrop is an end-to-end encrypted, code snippet sharing extension for VSCod
 2. Right click and select `Send Selection via Snippet Drop`.
 3. Select a recent contact to send to or select `New GitHub User` to specifiy a different GitHub username.
 
+![Sending Snippets Preview](./misc/send-preview.gif)
+
 ## Receiving Snippets
 
 1. Click the SnippetDrop icon in the left sidebar.
 2. New snippets are automatically fetched every 10 seconds; you can force fetch using the refresh icon in the top right.
 2. Use the on-screen `COPY` buttons to copy a snippet to your clipboard.
+
+![Receiving Snippets Preview](./misc/receive-preview.gif)
 
 ## End-to-End Encryption Details
 
@@ -29,6 +33,8 @@ SnippetDrop is an end-to-end encrypted, code snippet sharing extension for VSCod
 - **Sending a snippet:** 1) extension downloads recipient's public keys, 2) encrypts snippet, 3) uploads encrypted snippet to SnippetDrop's servers.
 - **Receiving snippets:** 1) extension fetches encrypted snippets for your username + public key, 2) decrypts and stores them locally using private key.
 - **Encrypted snippets are deleted from servers** once the recipient has downloaded them or 7 days has passed.
+
+![SnippetDrop Encryption Workflow](./misc/architecture.png)
 
 ## For Extension Development
 
