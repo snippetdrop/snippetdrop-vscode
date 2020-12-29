@@ -30,7 +30,7 @@ export async function connectSSE() {
 		}
 	};
 	// create event stream
-	es = new EventSource(`${API_DOMAIN}/api/v1/events/${hash}`, opts);
+	es = new EventSource(`${API_DOMAIN}/v1/events/${hash}`, opts);
 	// handle event types
 	es.addEventListener('open', e => { console.info('SSE Connected'); });
 	es.addEventListener('close', e => { console.info('SSE Closed'); });

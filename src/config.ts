@@ -1,5 +1,5 @@
 export const DEV: boolean = process.env.NODE_ENV === 'dev';
-export const API_DOMAIN: string = DEV ? 'http://localhost:3000' : 'https://snippetdrop.com';
+export const API_DOMAIN: string = DEV ? 'http://localhost:3000' : 'https://api.snippetdrop.com';
 export const LOCAL_AUTH_LISTENER_PORT = 54321;
 export const KEY_SIZE = 2048;
 export const PUBLIC_KEY_FORMAT = 'openssh-public-pem';

@@ -27,7 +27,7 @@ async function getNewTempToken(id, token): Promise<any> {
 		}
 	};
 	// call API
-	const res = await axios(`${API_DOMAIN}/api/v1/token`, params);
+	const res = await axios(`${API_DOMAIN}/v1/token`, params);
 	// return API JSON response data
 	return res.data;
 }
@@ -43,7 +43,7 @@ export async function getApiKeyViaOTT(id, ott): Promise<any> {
 		}
 	};
 	// call API
-	const res = await axios(`${API_DOMAIN}/api/v1/api-key`, params);
+	const res = await axios(`${API_DOMAIN}/v1/api-key`, params);
 	// return API JSON response data
 	return res.data;
 }
