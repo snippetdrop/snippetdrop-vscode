@@ -26,13 +26,12 @@ SnippetDrop is an end-to-end encrypted, code snippet sharing extension for VSCod
 
 ## End-to-End Encryption Details
 
-- SnippetDrop uses 2048 bit asymmetric RSA encryption via `node-rsa`
-- **Key pairs** are **generated locally** on your device
-- **Private keys** stay on your device; **never uploaded**
-- Public keys are uploaded to SnippetDrop's server
-- **Sending a snippet:** 1) extension downloads recipient's public keys, 2) encrypts snippet, 3) uploads encrypted snippet to SnippetDrop's servers.
-- **Receiving snippets:** 1) extension fetches encrypted snippets for your username + public key, 2) decrypts and stores them locally using private key.
-- **Encrypted snippets are deleted from servers** once the recipient has downloaded them or 7 days has passed.
+- 2048 bit asymmetric RSA encryption using `node-rsa`.
+- Key pairs generated locally on your device.
+- **Private keys** stay on your device; **never uploaded**.
+- Encrypted snippets removed from servers upon recipient download or 7 days.
+- Native support for multiple VS Code workspaces per user.
+- Open sourced extension and encryption implementation on GitHub.
 
 ![SnippetDrop Encryption Workflow](misc/architecture.png)
 
