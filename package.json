@@ -27,6 +27,7 @@
 	],
 	"keywords": [
 		"snippetdrop",
+		"snippet drop",
 		"snippets",
 		"share",
 		"secure share"
@@ -120,6 +121,10 @@
 				"icon": "$(refresh)"
 			}
 		],
+		"keybindings": {
+			"command": "snippetDrop.sendSnippet",
+			"key": "shift+ctrl+s"
+		},
 		"menus": {
 			"explorer/context": [
 				{
