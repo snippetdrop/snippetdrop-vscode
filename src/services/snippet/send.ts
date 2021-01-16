@@ -59,7 +59,7 @@ export async function sendSnippet(snippet?: string) {
 		const publicKeysToEncryptWith = await getUserPublicKeys(recipient);
 		// if no public keys in response, recipient either doesn't exist or sender blocked them
 		if (!publicKeysToEncryptWith || !publicKeysToEncryptWith.length) {
-			return vscode.window.showErrorMessage(`GitHub user ${recipient} is either not setup on SnippetDrop or does not exist.`);
+			return vscode.window.showErrorMessage(`GitHub user ${recipient} is either not registered on SnippetDrop or you don't have permissions to send to them.`);
 		}
 		// encrypt snippet per public key
 		publicKeysToEncryptWith.map((x: any) => {

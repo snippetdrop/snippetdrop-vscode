@@ -44,6 +44,7 @@ export class AccountProvider implements vscode.WebviewViewProvider {
 				case 'trigger-login':
 					{
 						try {
+							await cleanupDevice(false);
 							const uri: vscode.Uri = vscode.Uri.parse(`${API_DOMAIN}/login/${data.value}`);
 							vscode.commands.executeCommand("vscode.open", uri);
 							const { userId, apiKey, username } = await initAuthWorkflow();
@@ -88,8 +89,8 @@ export class AccountProvider implements vscode.WebviewViewProvider {
 			<div class="section">
 				<button class="settings-btn" id="login-btn">Login with GitHub</button>
 				<p id="generate-key-msg">Generating device RSA key pair...</p>
-				<p class="copyright"><a href="https://snippetdrop.com/help">Help</a> | <a
-						href="https://snippetdrop.com/terms">Terms</a> | <a href="https://snippetdrop.com/privacy">Privacy</a></p>
+				<p class="copyright"><a href="https://support.snippetdrop.com">Help</a> | <a
+						href="https://tos.snippetdrop.com">Terms</a> | <a href="https://privacy.snippetdrop.com">Privacy</a></p>
 			</div>
 			`;
 		} else {
@@ -97,8 +98,8 @@ export class AccountProvider implements vscode.WebviewViewProvider {
 			<div class="section account-section">
 				<p id="username"></p>
 				<button class="settings-btn" id="disconnect-btn">Disconnect Device</button>
-				<p class="copyright"><a href="https://snippetdrop.com/help">Help</a> | <a
-						href="https://snippetdrop.com/terms">Terms</a> | <a href="https://snippetdrop.com/privacy">Privacy</a></p>
+				<p class="copyright"><a href="https://support.snippetdrop.com">Help</a> | <a
+						href="https://tos.snippetdrop.com">Terms</a> | <a href="https://privacy.snippetdrop.com">Privacy</a></p>
 			</div>
 			`;
 		}
