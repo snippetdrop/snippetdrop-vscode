@@ -1,4 +1,6 @@
 import * as vscode from 'vscode';
+import * as config from './config'
+import { getAPIDomain } from './services/api/domain'
 import { LocalDB } from './db';
 import { sendSnippet } from './services/snippet/send';
 import { setEventHandler, connectSSE, closeSSE } from './services/api/sse';
@@ -8,7 +10,13 @@ import { BlockedSendersProvider } from './webviews/blocked';
 import { AccountProvider } from './webviews/account';
 import { SnippetsSentProvider } from './webviews/sent';
 
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
+
+	if (!config.DEV) {
+		try {
+			config.setAPIDomain(await getAPIDomain())
+		} catch (e) { }
+	}
 
 	// persist the LocalDB in VSCode's global store
 	LocalDB.state = context.globalState;
@@ -76,7 +84,7 @@ export function activate(context: vscode.ExtensionContext) {
 			providerBlocked.refreshView();
 		}));
 
-		context.subscriptions.push(
+	context.subscriptions.push(
 		vscode.commands.registerCommand('snippetDrop.refreshSentView', async () => {
 			providerSent.refreshView();
 		}));

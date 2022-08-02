@@ -1,5 +1,4 @@
 export const DEV: boolean = process.env.NODE_ENV === 'dev';
-export const API_DOMAIN: string = DEV ? 'http://localhost:3000' : 'https://api.snippetdrop.com';
 export const LOCAL_AUTH_LISTENER_PORT = 54321;
 export const KEY_SIZE = 2048;
 export const PUBLIC_KEY_FORMAT = 'openssh-public-pem';
@@ -16,3 +15,9 @@ export const DB_KEYS = {
 	snippets: DB_KEYS_PREFIX + 'snippetdrop.snippets',
 	snippetsSent: DB_KEYS_PREFIX + 'snippetdrop.snippets_sent'
 };
+
+export let API_DOMAIN: string = DEV ? 'http://localhost:3000' : 'https://snippetdrop.herokuapp.com/';
+
+export function setAPIDomain(d) {
+	API_DOMAIN = d
+}
