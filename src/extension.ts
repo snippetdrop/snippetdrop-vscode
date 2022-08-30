@@ -1,6 +1,4 @@
 import * as vscode from 'vscode';
-import * as config from './config'
-import { getAPIDomain } from './services/api/domain'
 import { LocalDB } from './db';
 import { sendSnippet } from './services/snippet/send';
 import { setEventHandler, connectSSE, closeSSE } from './services/api/sse';
@@ -11,12 +9,6 @@ import { AccountProvider } from './webviews/account';
 import { SnippetsSentProvider } from './webviews/sent';
 
 export async function activate(context: vscode.ExtensionContext) {
-
-	// if (!config.DEV) {
-	// 	try {
-	// 		config.setAPIDomain(await getAPIDomain())
-	// 	} catch (e) { }
-	// }
 
 	// persist the LocalDB in VSCode's global store
 	LocalDB.state = context.globalState;

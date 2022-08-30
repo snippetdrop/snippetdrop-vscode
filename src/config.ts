@@ -16,8 +16,4 @@ export const DB_KEYS = {
 	snippetsSent: DB_KEYS_PREFIX + 'snippetdrop.snippets_sent'
 };
 
-export let API_DOMAIN: string = DEV ? 'http://localhost:3000' : 'https://api.snippetdrop.com/';
-
-// export function setAPIDomain(d) {
-// 	API_DOMAIN = d
-// }
+export let API_DOMAIN: string = DEV ? 'http://localhost:3000' : 'https://api.snippetdrop.com';
