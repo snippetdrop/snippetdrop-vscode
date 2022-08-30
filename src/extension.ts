@@ -12,11 +12,11 @@ import { SnippetsSentProvider } from './webviews/sent';
 
 export async function activate(context: vscode.ExtensionContext) {
 
-	if (!config.DEV) {
-		try {
-			config.setAPIDomain(await getAPIDomain())
-		} catch (e) { }
-	}
+	// if (!config.DEV) {
+	// 	try {
+	// 		config.setAPIDomain(await getAPIDomain())
+	// 	} catch (e) { }
+	// }
 
 	// persist the LocalDB in VSCode's global store
 	LocalDB.state = context.globalState;
